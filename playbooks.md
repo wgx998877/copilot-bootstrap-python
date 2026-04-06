@@ -2,6 +2,16 @@
 
 Select the section matching the user's project type.
 
+## Project Type Decision Tree
+
+- Importable package, no CLI → **Tiny Library**
+- Terminal command with args → **CLI Tool**
+- HTTP endpoints → **Mini API**
+- Input → transform → output (files/data) → **Local Data Tool**
+- Hypothesis-driven, iterative → **Research Prototype**
+
+If the brief spans multiple types, pick the dominant one and note the overlap as a TODO.
+
 ---
 
 ## Tiny Library

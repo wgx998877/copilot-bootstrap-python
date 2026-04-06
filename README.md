@@ -28,7 +28,6 @@ You are initializing a new small Python project. This repository is your knowled
 ├── .gitignore
 ├── src/<package_name>/
 │   ├── __init__.py                    # package marker, re-export public API
-│   ├── __main__.py                    # enables `python -m <pkg>` (if runnable)
 │   └── <modules per playbook>         # see playbooks.md for per-type structure
 └── tests/
     └── test_smoke.py
@@ -36,6 +35,8 @@ You are initializing a new small Python project. This repository is your knowled
 
 Optional (only when justified):
 ```
+├── src/<package_name>/
+│   └── __main__.py                    # enables `python -m <pkg>` (add when runnable)
 ├── .github/
 │   └── skills/<name>/SKILL.md         # on-demand workflow skills
 ├── .python-version
@@ -66,6 +67,7 @@ Adaptable base files. Rewrite completely for the target project.
 | [AGENTS.base.md](templates/AGENTS.base.md) | Root `AGENTS.md` — primary Copilot guidance |
 | [README.base.md](templates/README.base.md) | Project `README.md` |
 | [pyproject.base.toml](templates/pyproject.base.toml) | `pyproject.toml` manifest |
+| [.gitignore.base](templates/.gitignore.base) | `.gitignore` — Python/venv/IDE defaults |
 
 ### Skills Catalog — `skills-catalog/`
 

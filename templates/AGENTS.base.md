@@ -31,6 +31,8 @@
 <!-- If the package should be runnable via `python -m {{package_name}}`, add __main__.py:
      from {{package_name}}.main import main
      main()
+     For an installed CLI command, also add [project.scripts] in pyproject.toml.
+     __main__.py covers `python -m` invocation; [project.scripts] covers a named command after install.
 -->
 
 ## Key Interfaces
@@ -86,7 +88,12 @@ Definition of done for non-trivial changes:
 - AGENTS architecture and interfaces reflect current module names and behavior.
 - Known Unknowns and Open Questions are either resolved or explicitly tracked.
 
+<!-- If the code-review skill is included, its "Mode 2: Project Shaping" provides the
+     full audit procedure that complements this checklist. -->
+
 ### Pythonic Conventions
+
+<!-- Derived from principles.md "Pythonic Patterns" — keep in sync when editing either. -->
 
 - Use type hints on public function signatures.
 - Use `pathlib.Path` over `os.path` for file operations.
