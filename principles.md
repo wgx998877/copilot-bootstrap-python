@@ -19,7 +19,7 @@ Project initialization is a **structured first draft**, not a finished design. T
 
 ## Minimality
 
-**Always include:** `AGENTS.md`, `README.md`, `pyproject.toml`, `.gitignore`, `src/<pkg>/__init__.py`, `src/<pkg>/main.py` or `core.py`, `tests/test_smoke.py`.
+**Always include:** `AGENTS.md`, `README.md`, `pyproject.toml`, `.gitignore`, `src/<pkg>/__init__.py`, one or two source modules (per playbook), `tests/test_smoke.py`.
 
 **Sometimes include (only if justified):** `.python-version`, `scripts/` helper, `.github/skills/`.
 
@@ -30,7 +30,7 @@ Project initialization is a **structured first draft**, not a finished design. T
 ## Architecture
 
 - Start with the **narrowest architecture** that satisfies current needs.
-- **Separate core logic from IO** early: `core.py` (pure logic, no IO) + `main.py` (entrypoint, IO, wiring).
+- **Separate IO from logic** early. The entrypoint handles IO, arg parsing, and wiring. Logic modules stay pure and testable. Name modules after what they do (e.g. `parser.py`, `solver.py`), not generically (`core.py`, `utils.py`).
 - **One clean happy path first** — before edge cases, generality, or plugin systems.
 - **No premature layers** — no ABCs before two implementations, no plugin systems before one stable path, no config frameworks before hardcoded values are a problem.
 - **Isolate side effects** — functions that touch files, APIs, or databases should be identifiable and contained.
@@ -51,6 +51,20 @@ Project initialization is a **structured first draft**, not a finished design. T
 - **Correctness first, then clarity, then performance.** Only optimize with evidence.
 - **Separate entrypoints from logic.** The entrypoint parses input, calls core, formats output. Core is importable and testable.
 - **Tests: proportional.** One smoke test at init. Grow coverage with the code.
+
+### Pythonic Patterns
+
+- Type hints on public function signatures — aids both readers and Copilot.
+- `pathlib.Path` over `os.path`. Context managers (`with`) for resource handling.
+- `dataclasses` or `NamedTuple` for structured data instead of plain dicts.
+- f-strings for formatting. `snake_case` / `PascalCase` / `UPPER_SNAKE` naming.
+- `if __name__ == "__main__"` guard in runnable modules.
+
+### Modern Package Structure
+
+- `__init__.py` — keep minimal: re-export public API, nothing else.
+- `__main__.py` — enables `python -m <package>`. Add when the package should be directly runnable. Contains only: `from <pkg>.main import main; main()`.
+- `py.typed` marker file — add if the library exports type hints for consumers.
 
 ## TODO Policy
 

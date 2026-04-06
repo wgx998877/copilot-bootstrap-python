@@ -27,8 +27,9 @@ You are initializing a new small Python project. This repository is your knowled
 ├── pyproject.toml
 ├── .gitignore
 ├── src/<package_name>/
-│   ├── __init__.py
-│   └── main.py or core.py
+│   ├── __init__.py                    # package marker, re-export public API
+│   ├── __main__.py                    # enables `python -m <pkg>` (if runnable)
+│   └── <modules per playbook>         # see playbooks.md for per-type structure
 └── tests/
     └── test_smoke.py
 ```
@@ -65,9 +66,6 @@ Adaptable base files. Rewrite completely for the target project.
 | [AGENTS.base.md](templates/AGENTS.base.md) | Root `AGENTS.md` — primary Copilot guidance |
 | [README.base.md](templates/README.base.md) | Project `README.md` |
 | [pyproject.base.toml](templates/pyproject.base.toml) | `pyproject.toml` manifest |
-| [package-main.py](templates/package-main.py) | `src/<pkg>/main.py` — entrypoint |
-| [core.py](templates/core.py) | `src/<pkg>/core.py` — core logic |
-| [test_smoke.py](templates/test_smoke.py) | `tests/test_smoke.py` — minimal test |
 
 ### Skills Catalog — `skills-catalog/`
 
@@ -89,10 +87,10 @@ Skills are on-demand workflows with concrete procedures. Generated projects plac
 
 | Skill | Include when... |
 |-------|----------------|
-| debug | The logic is stateful, algorithmic, or involves hard-to-trace bugs (backtracking, async, data pipelines, external APIs) |
 | code-review | The project will have ongoing changes reviewed (team project, iterative development, quality gates) |
 | demo-build | The solution needs a visual or interactive showcase (grid visualization, CLI demo, stakeholder presentation) |
 | experiment-review | The project involves research, hypothesis testing, or experimental iteration |
+| debug | The logic is stateful, algorithmic, or involves hard-to-trace bugs (backtracking, async, data pipelines, external APIs) |
 | release-prep | The project will be published as a package (PyPI, internal registry, versioned releases) |
 
 Include multiple skills if the project warrants them. Omit all if none clearly apply.

@@ -49,10 +49,10 @@ Output: results/entropy_correlation.csv
 **Good:**
 ```
 src/attn_complexity/
-    core.py          # extract_attention(), compute_entropy() — pure, testable
+    entropy.py       # extract_attention(), compute_entropy() — pure, testable
     utils.py         # load_dataset(), save_results() — IO helpers
 scripts/
-    run_entropy.py   # thin: parse args, call core, save results
+    run_entropy.py   # thin: parse args, call logic, save results
 ```
 
 **Bad:**
@@ -61,8 +61,8 @@ experiment.py        # 500 lines: loads data, runs model, computes metrics, save
 ```
 
 **Specific checks:**
-- Can you `from pkg.core import function` and call it in a test without any file/network IO? If not, extract the pure logic.
-- Is `scripts/run_*.py` thin? It should be: load data → call core → save. Under 50 lines for simple experiments.
+- Can you `from pkg.<module> import function` and call it in a test without any file/network IO? If not, extract the pure logic.
+- Is `scripts/run_*.py` thin? It should be: load data → call logic → save. Under 50 lines for simple experiments.
 - Are experiment-specific hacks marked? `# HACK: workaround for tokenizer bug in v2.1`
 
 ### 4. Check reproducibility
@@ -109,11 +109,11 @@ Research code has different quality bars:
 | Layer | Quality bar |
 |-------|------------|
 | Experiment scripts (`scripts/`) | Rough-but-readable. Hardcoded params OK if visible. Print debugging OK. |
-| Core logic (`src/pkg/core.py`) | Clean and testable. Would survive a code review. |
+| Logic modules (`src/pkg/<domain>.py`) | Clean and testable. Would survive a code review. |
 | Utilities (`src/pkg/utils.py`) | Correct but not necessarily elegant. |
 
 When an experiment stabilizes and the code is worth keeping:
-1. Extract proven logic from scripts into `core.py`
+1. Extract proven logic from scripts into descriptive modules (e.g. `entropy.py`, `model.py`)
 2. Add tests for the extracted functions
 3. Archive or delete the raw experiment script
 4. Update AGENTS.md to reflect what's now stable

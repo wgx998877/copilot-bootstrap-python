@@ -33,7 +33,7 @@ pip install -e .
 src/
 └── {{package_name}}/
     ├── __init__.py
-    └── main.py        # or core.py
+    └── main.py        # or <domain>.py — name after what it does
 tests/
 └── test_smoke.py
 ```

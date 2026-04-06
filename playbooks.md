@@ -8,7 +8,7 @@ Select the section matching the user's project type.
 
 **When:** Small, reusable Python library. Importable package with a public API, minimal CLI.
 
-**Structure:** `src/<pkg>/__init__.py` + `core.py`. No `main.py` unless brief mentions CLI.
+**Structure:** `__init__.py` (public API re-exports) + `<domain>.py` (logic — name after what it does, e.g. `parser.py`, `encoder.py`). No `main.py` unless brief mentions CLI. Add `py.typed` if publishing type hints.
 
 **pyproject.toml:** Minimal `requires-python`, empty or near-empty `dependencies`. Consider `[project.optional-dependencies]` for dev extras.
 
@@ -29,7 +29,7 @@ TODO: clarify whether this library will be published to PyPI or remain internal
 
 **When:** Command-line tool invoked from terminal. Takes arguments, produces output or side effects.
 
-**Structure:** `src/<pkg>/main.py` (entrypoint: arg parsing, IO) + `core.py` (logic: no IO, testable).
+**Structure:** `__init__.py` + `__main__.py` (enables `python -m <pkg>`) + `main.py` (arg parsing, IO) + `<domain>.py` (logic, no IO — e.g. `solver.py`, `converter.py`). Tests in `tests/`.
 
 **pyproject.toml:** Add `[project.scripts]` entry: `<tool-name> = "<pkg>.main:main"`. Use `argparse` (stdlib) unless brief specifies `click`/`typer`.
 
@@ -50,7 +50,7 @@ TODO: clarify error-handling policy (fail fast vs. collect and report)
 
 **When:** Experimental/research codebase. Emphasis on exploration, iteration speed, and clarity of experimental logic.
 
-**Structure:** `src/<pkg>/core.py` (experiment logic) + optional `utils.py` + optional `scripts/run_experiment.py`.
+**Structure:** `__init__.py` + `<experiment>.py` (experiment logic) + optional `utils.py` + optional `scripts/run_experiment.py`. Tests in `tests/`.
 
 **pyproject.toml:** Pin key experiment dependencies. Use `[project.optional-dependencies]` for heavier deps.
 
@@ -72,7 +72,7 @@ TODO: decide whether results go to files, database, or stdout
 
 **When:** Data processing, transformation, or analysis tool. Input → transform → output. Typically runs locally.
 
-**Structure:** `src/<pkg>/core.py` (transformation logic) + `main.py` (entrypoint, IO). Optional `data/` directory.
+**Structure:** `__init__.py` + `<domain>.py` (transformation logic, e.g. `transform.py`, `pipeline.py`) + `main.py` (entrypoint, IO). Optional `__main__.py` if runnable via `python -m`. Tests in `tests/`.
 
 **pyproject.toml:** Add data-processing deps only when justified (pandas, polars). Consider `[project.scripts]` if tool has CLI.
 
@@ -94,7 +94,7 @@ TODO: determine whether streaming or batch processing is appropriate
 
 **When:** Small HTTP API or web service. Few endpoints (1–10), lightweight framework.
 
-**Structure:** `src/<pkg>/app.py` (routes, API definition) + `core.py` (business logic, no framework deps).
+**Structure:** `__init__.py` + `app.py` (routes, API definition) + `<domain>.py` (business logic, no framework deps, e.g. `models.py`, `service.py`). Tests in `tests/`.
 
 **pyproject.toml:** Add chosen framework (`fastapi`, `flask`) + server (`uvicorn`). Keep minimal.
 

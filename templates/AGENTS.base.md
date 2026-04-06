@@ -3,89 +3,80 @@
 <!-- This file is the primary persistent guidance for GitHub Copilot in this project. -->
 <!-- Rewrite every section to reflect the actual project. Do not leave template language. -->
 
-## Project Framing
-
-### What this project does
+## What This Project Does
 
 {{PROJECT_PURPOSE}}
 
-### What this project is not trying to solve (yet)
+## What This Project Does Not Do (Yet)
 
 {{NON_GOALS}}
 
 ## Architecture
 
-### Current shape
+<!-- Describe the actual project structure. Examples by type:
+     Library:  __init__.py (public API) + <domain>.py (logic, e.g. parser.py, encoder.py)
+     CLI:      __main__.py (entry) + main.py (arg parsing, IO) + <domain>.py (logic)
+     API:      app.py (routes) + <domain>.py (business logic)
+     Research: <experiment>.py (experiment logic) + scripts/run_experiment.py
+     Data:     main.py (IO) + <domain>.py (transformation logic)
+     Name modules after what they do, not generically. Adjust to match the actual project. -->
 
 - Single-package layout under `src/{{package_name}}/`
-- Entrypoint in `main.py`, core logic in `core.py`
+- `__init__.py` — package marker; keep minimal, re-export public API only
+- {{ENTRYPOINT_DESCRIPTION}}
+- {{CORE_LOGIC_DESCRIPTION}}
+- `tests/test_smoke.py` — verifies import + basic happy path; grow with the code
 - Flat module structure — no sub-packages unless complexity demands it
 
-### Principles
+<!-- If the package should be runnable via `python -m {{package_name}}`, add __main__.py:
+     from {{package_name}}.main import main
+     main()
+-->
 
-- Start with the narrowest architecture that satisfies current needs
-- Separate core logic from IO — keep domain logic testable
-- Isolate side effects (file reads, API calls, database access)
-- No abstract base classes before two concrete implementations exist
-- Prefer reversible decisions
+## Key Interfaces
 
-## Dependency Discipline
+<!-- Describe the primary ways users interact with this project. -->
+<!-- Examples: CLI commands, public API functions, input/output formats. -->
 
-- Prefer the standard library when it covers 80% of the need
-- Every added dependency must have a clear operational benefit
-- Avoid framework gravity — do not let one library dictate architecture
-- Keep `pyproject.toml` dependencies intentional and few
+- TODO: {{KEY_INTERFACE_1}}
+- TODO: {{KEY_INTERFACE_2}}
 
-## Code Structure
+## Dependencies
 
-- Separate entrypoints from core logic
-- Avoid deep nesting — prefer flat, explicit module boundaries
-- Functions over classes unless state management is genuinely needed
-- Clarity beats cleverness
+<!-- List chosen dependencies and why. Remove if none. -->
 
-## Development Rules
+None yet. Prefer stdlib unless the brief justifies a dependency.
 
-- Use `uv` for dependency management
-- Use `pytest` for testing
-- Run `uv run pytest` to validate changes
-- Keep tests proportional — do not write tests for code that doesn't exist yet
-- One smoke test at minimum; grow test coverage with the code
+## Testing Strategy
 
-## Change Philosophy
+- Run tests: `uv run pytest`
+- Smoke test verifies import and basic happy path
+- Grow coverage as the code grows — don't test code that doesn't exist yet
 
-- Prioritize reversible decisions
-- Do not optimize prematurely
-- Preserve simplicity as the project grows
-- Every file and abstraction must justify its existence
-- Make future change easy, but do not pre-build for hypothetical scale
+<!-- Adjust testing approach for this project. E.g., mock external APIs, test data fixtures. -->
 
-## Quality Bar
+## Development Guidelines
 
-- Code should be readable on first pass
-- No dead code, no junk files
-- Honest TODOs over fake precision
-- The repo should feel intentionally small
+- **Separate IO from logic.** Keep IO/wiring in the entrypoint; keep core logic pure and testable.
+- **Prefer stdlib.** Only add a dependency when it has a clear benefit over stdlib.
+- **Functions over classes** unless state management is genuinely needed.
+- **No premature abstraction.** No ABCs before two implementations, no config systems before hardcoded values are a problem.
+- **Clarity beats cleverness.** Code should be readable on first pass.
+- **Honest TODOs over fake precision.** Mark unknowns explicitly; don't invent answers.
+
+### Pythonic Conventions
+
+- Use type hints on public function signatures.
+- Use `pathlib.Path` over `os.path` for file operations.
+- Use context managers (`with`) for resource handling (files, connections).
+- Use f-strings for string formatting.
+- Use `dataclasses` or `NamedTuple` for structured data instead of plain dicts or tuples.
+- Follow naming: `snake_case` for functions/variables, `PascalCase` for classes, `UPPER_SNAKE` for constants.
+- Use `if __name__ == "__main__"` guard in runnable modules.
 
 ## Known Unknowns
 
+<!-- Genuine uncertainties from the brief. Remove when resolved. -->
+
 - TODO: {{KNOWN_UNKNOWN_1}}
 - TODO: {{KNOWN_UNKNOWN_2}}
-- TODO: {{KNOWN_UNKNOWN_3}}
-
-<!-- Populate from genuine unknowns in the user's brief. Remove this comment. -->
-
-## Open Decisions
-
-- TODO: {{OPEN_DECISION_1}}
-- TODO: {{OPEN_DECISION_2}}
-
-<!-- These are design choices that have not yet been made. Remove this comment. -->
-
-## Copilot Customization
-
-This project uses `AGENTS.md` (this file) as the primary guidance.
-
-If additional customization is added later, use these paths:
-- `.github/skills/<name>/SKILL.md` — on-demand workflow skills
-- `.github/prompts/<name>.prompt.md` — reusable prompt templates
-- `.github/instructions/<name>.instructions.md` — file-specific instructions

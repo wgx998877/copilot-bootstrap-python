@@ -33,7 +33,7 @@ Python tracebacks read bottom-to-top. The actual error is the **last line**. The
 Traceback (most recent call last):
   File "src/pkg/main.py", line 42, in process    ← YOUR CODE (look here)
     result = transform(data)
-  File "src/pkg/core.py", line 18, in transform   ← YOUR CODE (root cause likely here)
+  File "src/pkg/transform.py", line 18, in transform   ← YOUR CODE (root cause likely here)
     return data["key"]
 KeyError: 'key'                                    ← ACTUAL ERROR
 ```
