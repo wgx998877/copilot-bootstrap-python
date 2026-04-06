@@ -1,0 +1,23 @@
+[project]
+name = "{{project_name}}"
+version = "0.1.0"
+description = "{{project_description}}"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+# TODO: adjust requires-python to match the project's actual minimum version
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.backends"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/{{package_name}}"]
+
+# Uncomment if the project has a CLI entrypoint:
+# [project.scripts]
+# {{tool_name}} = "{{package_name}}.main:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

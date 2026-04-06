@@ -1,0 +1,7 @@
+[project]
+name = "copilot-bootstrap-python"
+version = "0.1.0"
+description = "Bootstrap knowledge repository for small Python projects initialized through GitHub Copilot"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
