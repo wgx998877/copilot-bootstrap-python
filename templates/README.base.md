@@ -1,18 +1,8 @@
 # {{PROJECT_NAME}}
 
-## Project Purpose
+{{ONE_SENTENCE_DESCRIPTION}}
 
-{{PROJECT_PURPOSE}}
-
-<!-- Rewrite this section entirely based on the user's brief. Do not leave template language. -->
-
-## What This Project Is
-
-- {{ONE_SENTENCE_DESCRIPTION}}
-
-## What This Project Is Not (Yet)
-
-- {{EXPLICIT_NON_GOALS}}
+<!-- Rewrite the description based on the user's brief. Do not leave template language. -->
 
 ## Getting Started
 
@@ -48,14 +38,19 @@ tests/
 └── test_smoke.py
 ```
 
+## Development
+
+```bash
+# Run tests
+uv run pytest
+
+# Run the project
+uv run python -m {{package_name}}
+```
+
 ## Open Questions
 
 - TODO: {{OPEN_QUESTION_1}}
 - TODO: {{OPEN_QUESTION_2}}
-- TODO: {{OPEN_QUESTION_3}}
 
-<!-- Populate these from genuine unknowns in the user's brief. Remove this comment. -->
-
-## License
-
-<!-- TODO: decide on license -->
+<!-- Populate from genuine unknowns in the user's brief. Remove this comment. -->

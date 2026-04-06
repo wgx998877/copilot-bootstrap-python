@@ -83,26 +83,19 @@ Skills are on-demand workflows with concrete procedures. Generated projects plac
 
 ### When to Include Skills
 
-**Default: include none.** Most project guidance belongs in AGENTS.md, not in separate skills.
-
-Include a skill only when ALL of these are true:
-1. The workflow is **repeated** — it will be invoked more than once during the project's life.
-2. The workflow is **procedural** — it has concrete steps, not just general advice.
-3. The workflow is **distinct** from normal coding — it's a separate mode of work (reviewing, debugging, releasing), not "write good code."
+**Default: none.** Most project guidance belongs in AGENTS.md. Include a skill when the project would benefit from a repeatable, procedural workflow beyond normal coding.
 
 **Decision guide:**
 
-| If the brief mentions... | Consider |
-|-------------------------|---------|
-| "ongoing reviews" or "team project" | code-review |
-| "demo", "showcase", "stakeholder presentation" | demo-build |
-| "research", "experiment", "hypothesis" | experiment-review |
-| "publish to PyPI", "release", "versioning" | release-prep |
-| Nothing about these | No skills |
+| Skill | Include when... |
+|-------|----------------|
+| debug | The logic is stateful, algorithmic, or involves hard-to-trace bugs (backtracking, async, data pipelines, external APIs) |
+| code-review | The project will have ongoing changes reviewed (team project, iterative development, quality gates) |
+| demo-build | The solution needs a visual or interactive showcase (grid visualization, CLI demo, stakeholder presentation) |
+| experiment-review | The project involves research, hypothesis testing, or experimental iteration |
+| release-prep | The project will be published as a package (PyPI, internal registry, versioned releases) |
 
-**Never include:** debug. It's in the catalog as a reference for the developer's own use, not as a default for generated projects. Debugging is too universal to be a project-specific skill.
-
-**Why no agents?** For small projects, skills are sufficient. Custom agents (`.github/agents/`) add value when you need **tool restrictions** (e.g., read-only reviewer) or **context isolation** (subagent returns a single result). Small projects rarely need either. If a project outgrows skills, the user should create agents custom-tailored to their workflow — not copied from a catalog.
+Include multiple skills if the project warrants them. Omit all if none clearly apply.
 
 ## Copilot File Conventions
 
