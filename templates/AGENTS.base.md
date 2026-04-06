@@ -64,6 +64,28 @@ None yet. Prefer stdlib unless the brief justifies a dependency.
 - **Clarity beats cleverness.** Code should be readable on first pass.
 - **Honest TODOs over fake precision.** Mark unknowns explicitly; don't invent answers.
 
+## Project Shaping
+
+After any design or code change, keep these three artifacts in lockstep:
+
+- **Code** is the source of truth for behavior.
+- **README.md** explains user-facing usage, setup, and constraints.
+- **AGENTS.md** explains implementation intent, architecture, and working agreements.
+
+Use this alignment check before considering a change done:
+
+- If behavior or interfaces changed, update code first, then update README and AGENTS in the same change.
+- If architecture, module boundaries, or tradeoffs changed, update the Architecture and Key Interfaces sections in AGENTS.
+- If commands, install steps, or examples changed, update README Getting Started/Usage immediately.
+- If a section is intentionally stale because a decision is pending, add a short TODO in both README and AGENTS so drift is explicit.
+- Avoid contradictions: when README and AGENTS disagree, resolve by matching both to the current code.
+
+Definition of done for non-trivial changes:
+
+- README examples/commands are runnable against current code.
+- AGENTS architecture and interfaces reflect current module names and behavior.
+- Known Unknowns and Open Questions are either resolved or explicitly tracked.
+
 ### Pythonic Conventions
 
 - Use type hints on public function signatures.
