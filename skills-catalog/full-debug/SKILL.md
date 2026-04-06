@@ -1,11 +1,11 @@
 ---
-name: debug
-description: "Systematically debug issues in Python code. Use when diagnosing failures, tracing unexpected behavior, isolating bugs, or investigating flaky tests."
+name: full-debug
+description: "Systematically debug Python runtime failures. Use when diagnosing tracebacks, unexpected output, test failures, flaky tests, or performing root-cause analysis."
 ---
 
-# Debug
+# Full Debug
 
-Systematic debugging for small Python projects. Isolate, reproduce, diagnose, fix.
+The complete debugging workflow for Python runtime failures — from triage through verified fix. Use the full procedure for non-obvious bugs; skip to the relevant step when the cause is clear.
 
 ## Procedure
 
@@ -25,7 +25,20 @@ If the failure is intermittent:
 - Check for timing dependencies, random seeds, or external service flakiness
 - Add `PYTHONHASHSEED=0` to eliminate hash randomization as a factor
 
-### 2. Read the traceback carefully
+### 2. Quick-check common gotchas
+
+Before investing in deep investigation, rule out these frequent causes (30 seconds):
+
+- **Mutable default arguments:** `def f(items=[])` — the list is shared across calls. Fix: `def f(items=None): items = items or []`
+- **Late binding closures:** `lambdas = [lambda: i for i in range(3)]` — all return 2. Fix: `lambda i=i: i`
+- **Shallow copy:** `copy = original[:]` doesn't deep-copy nested structures.
+- **String vs. bytes:** Mixing `str` and `bytes` in file/network operations.
+- **Relative imports:** Running a module directly vs. as part of a package changes import behavior.
+- **Working directory:** `open("data.csv")` is relative to where you ran the command, not where the script lives. Use `Path(__file__).parent / "data.csv"`.
+
+If one of these matches, fix and verify. Otherwise continue to step 3.
+
+### 3. Read the traceback carefully
 
 Python tracebacks read bottom-to-top. The actual error is the **last line**. The cause is usually in **your code's last frame** (not inside library code).
 
@@ -44,10 +57,12 @@ KeyError: 'key'                                    ← ACTUAL ERROR
 | `KeyError` | Wrong key name, or data structure isn't what you expected. Print the actual keys. |
 | `AttributeError: 'NoneType'` | A function returned `None` unexpectedly. Check the function that produced the value. |
 | `TypeError: takes N args` | Calling with wrong # of args, or calling a non-callable. Check the call site. |
+| `ValueError` | Input has the right type but wrong content. Check the value and any assumptions about format. |
+| `RecursionError` | Unbounded recursion — missing base case or circular references. Check termination conditions. |
 | `ImportError` | Wrong package name, missing dep, or circular import. Check `from` path. |
 | `FileNotFoundError` | Wrong working directory or wrong relative path. Print `os.getcwd()` and the actual path. |
 
-### 3. Isolate the problem
+### 4. Isolate the problem
 
 **Bisection approach** — narrow down to the smallest reproducing case:
 
@@ -72,7 +87,7 @@ assert transform({"key": "value"}) == expected  # works
 assert transform({}) == expected                  # fails! — empty input not handled
 ```
 
-### 4. Inspect state at the failure point
+### 5. Inspect state at the failure point
 
 **Quick inspection (print debugging):**
 ```python
@@ -96,24 +111,23 @@ breakpoint()  # drops into pdb
 # c               — continue
 ```
 
-**For test failures:**
-```bash
-# Drop into debugger on failure
-uv run pytest tests/test_failing.py -x --pdb
-# Show local variables on failure
-uv run pytest tests/test_failing.py -x --tb=long -l
+**Structured logging** (when print debugging isn't enough):
+```python
+import logging
+logging.basicConfig(level=logging.DEBUG, format="%(name)s %(levelname)s %(message)s")
+log = logging.getLogger(__name__)
+log.debug("data=%r", data)  # lazy formatting — no f-string here
 ```
 
-### 5. Check common Python gotchas
-
-Before diving deep, rule out these frequent causes:
-
-- **Mutable default arguments:** `def f(items=[])` — the list is shared across calls. Fix: `def f(items=None): items = items or []`
-- **Late binding closures:** `lambdas = [lambda: i for i in range(3)]` — all return 2. Fix: `lambda i=i: i`
-- **Shallow copy:** `copy = original[:]` doesn't deep-copy nested structures.
-- **String vs. bytes:** Mixing `str` and `bytes` in file/network operations.
-- **Relative imports:** Running a module directly vs. as part of a package changes import behavior.
-- **Working directory:** `open("data.csv")` is relative to where you ran the command, not where the script lives. Use `Path(__file__).parent / "data.csv"`.
+**For test failures:**
+```bash
+# Quick triage — short traceback, stop on first failure
+uv run pytest tests/test_failing.py -x --tb=short
+# Deep dive — full traceback with local variables
+uv run pytest tests/test_failing.py -x --tb=long -l
+# Drop into debugger on failure
+uv run pytest tests/test_failing.py -x --pdb
+```
 
 ### 6. Fix and verify
 

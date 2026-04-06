@@ -71,29 +71,15 @@ Adaptable base files. Rewrite completely for the target project.
 
 ### Skills Catalog — `skills-catalog/`
 
-Skills are on-demand workflows with concrete procedures. Generated projects place them at `.github/skills/<name>/SKILL.md`.
+**Default: none.** Most project guidance belongs in AGENTS.md. Include a skill only when the project would benefit from a repeatable, procedural workflow beyond normal coding. Generated projects place them at `.github/skills/<name>/SKILL.md`.
 
-| Skill | What it does |
-|-------|-------------|
-| [code-review](skills-catalog/code-review/SKILL.md) | Two modes: change review (per-PR) and project shaping (periodic repo audit) |
-| [demo-build](skills-catalog/demo-build/SKILL.md) | Build lightweight demos, proof-of-concepts, and showcases |
-| [experiment-review](skills-catalog/experiment-review/SKILL.md) | Review research code for clarity, reproducibility, separation of concerns |
-| [debug](skills-catalog/debug/SKILL.md) | Systematic debugging: reproduce, isolate, diagnose, fix |
-| [release-prep](skills-catalog/release-prep/SKILL.md) | Prepare for release: packaging, versioning, PyPI publishing |
-
-### When to Include Skills
-
-**Default: none.** Most project guidance belongs in AGENTS.md. Include a skill when the project would benefit from a repeatable, procedural workflow beyond normal coding.
-
-**Decision guide:**
-
-| Skill | Include when... |
-|-------|----------------|
-| code-review | The project will have ongoing changes reviewed (team project, iterative development, quality gates) |
-| demo-build | The solution needs a visual or interactive showcase (grid visualization, CLI demo, stakeholder presentation) |
-| experiment-review | The project involves research, hypothesis testing, or experimental iteration |
-| debug | The logic is stateful, algorithmic, or involves hard-to-trace bugs (backtracking, async, data pipelines, external APIs) |
-| release-prep | The project will be published as a package (PyPI, internal registry, versioned releases) |
+| Skill | What it does | Include when... |
+|-------|-------------|-----------------|
+| [code-review](skills-catalog/code-review/SKILL.md) | Change review (per-PR) and project shaping (periodic audit) | Ongoing changes reviewed — team project, iterative dev, quality gates |
+| [demo-build](skills-catalog/demo-build/SKILL.md) | Build lightweight demos, proof-of-concepts, showcases | Need a visual or interactive showcase — grid viz, CLI demo, stakeholder presentation |
+| [experiment-review](skills-catalog/experiment-review/SKILL.md) | Review research code for clarity, reproducibility, separation | Research, hypothesis testing, or experimental iteration |
+| [full-debug](skills-catalog/full-debug/SKILL.md) | Systematic debugging: reproduce, isolate, diagnose, fix | Stateful/algorithmic logic, hard-to-trace bugs — backtracking, async, data pipelines, external APIs |
+| [release-prep](skills-catalog/release-prep/SKILL.md) | Prepare for release: packaging, versioning, PyPI publishing | Publishing as a package — PyPI, internal registry, versioned releases |
 
 Include multiple skills if the project warrants them. Omit all if none clearly apply.
 
@@ -105,14 +91,6 @@ When generating files for the new project:
 |------|------|
 | Primary Copilot guidance | `AGENTS.md` (root) |
 | Skills | `.github/skills/<name>/SKILL.md` |
-
-Other Copilot paths (use only when the project explicitly needs them):
-
-| What | Path |
-|------|------|
-| Custom agents | `.github/agents/<name>.agent.md` |
-| Prompts | `.github/prompts/<name>.prompt.md` |
-| File-specific instructions | `.github/instructions/<name>.instructions.md` |
 
 ## Scope
 
